@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--客户映射 指定到dao接口 -->
+<mapper namespace="com.deepexi.trade.mapper.OrderSkuWriteoffMapper">
+
+	<select id="findList" resultType="com.deepexi.trade.domain.eo.OrderSkuWriteoff">
+		SELECT * FROM tc_order_sku_writeoff t1 WHERE t1.dr = 0
+
+
+
+		<if test="eo.awardId != null  and eo.awardId!= ''   ">
+			AND t1.award_id IN
+
+			<foreach collection="eo.toListSplit(eo.awardId)" index="index" item="id" open="(" separator="," close=")">
+				#{id}
+			</foreach>
+		</if>
+
+
+
+		<if test="eo.awardItemId != null  and eo.awardItemId!= ''   ">
+			AND t1.award_item_id IN
+
+			<foreach collection="eo.toListSplit(eo.awardItemId)" index="index" item="id" open="(" separator="," close=")">
+				#{id}
+			</foreach>
+		</if>
+
+
+
+
+		<if test="eo.id != null  and eo.id != ''   ">
+			AND t1.id = #{ eo.id ,jdbcType=VARCHAR }
+		</if>
+		<if test="eo.tenantCode != null  and eo.tenantCode != ''   ">
+			AND t1.tenant_code = #{ eo.tenantCode ,jdbcType=VARCHAR }
+		</if>
+		<if test="eo.createdAt != null  and eo.createdAt != ''   ">
+			AND t1.created_at = #{ eo.createdAt ,jdbcType=TIMESTAMP }
+		</if>
+		<if test="eo.createdBy != null  and eo.createdBy != ''   ">
+			AND t1.created_by = #{ eo.createdBy ,jdbcType=VARCHAR }
+		</if>
+		<if test="eo.updatedAt != null  and eo.updatedAt != ''   ">
+			AND t1.updated_at = #{ eo.updatedAt ,jdbcType=TIMESTAMP }
+		</if>
+		<if test="eo.updatedBy != null  and eo.updatedBy != ''   ">
+			AND t1.updated_by = #{ eo.updatedBy ,jdbcType=VARCHAR }
+		</if>
+		<if test="eo.version != null  and eo.version != ''   ">
+			AND t1.version = #{ eo.version ,jdbcType=TINYINT }
+		</if>
+		<if test="eo.dr != null  and eo.dr != ''   ">
+			AND t1.dr = #{ eo.dr ,jdbcType=TINYINT }
+		</if>
+		<if test="eo.orderChildId != null  and eo.orderChildId != ''   ">
+			AND t1.order_child_id = #{ eo.orderChildId ,jdbcType=VARCHAR }
+		</if>
+
+		<if test="eo.orderSkuId != null  and eo.orderSkuId != ''   ">
+			AND t1.order_sku_id = #{ eo.orderSkuId ,jdbcType=VARCHAR }
+		</if>
+		<if test="eo.orderId != null  and eo.orderId != ''   ">
+			AND t1.order_id = #{ eo.orderId ,jdbcType=VARCHAR }
+		</if>
+		<if test="eo.status != null     ">
+			AND t1.status = #{ eo.status ,jdbcType=TINYINT }
+		</if>
+
+
+
+
+
+		<if test="eo.memberAwardItemId != null  and eo.memberAwardItemId != ''   ">
+			AND t1.member_award_item_id = #{ eo.memberAwardItemId ,jdbcType=VARCHAR }
+		</if>
+		<if test="eo.awardNum != null  and eo.awardNum != ''   ">
+			AND t1.award_num = #{ eo.awardNum ,jdbcType=TINYINT }
+		</if>
+		<if test="eo.remark1 != null  and eo.remark1 != ''   ">
+			AND t1.remark1 = #{ eo.remark1 ,jdbcType=VARCHAR }
+		</if>
+		<if test="eo.remark2 != null  and eo.remark2 != ''   ">
+			AND t1.remark2 = #{ eo.remark2 ,jdbcType=VARCHAR }
+		</if>
+		<if test="eo.remark3 != null  and eo.remark3 != ''   ">
+			AND t1.remark3 = #{ eo.remark3 ,jdbcType=VARCHAR }
+		</if>
+		<if test="eo.remark4 != null  and eo.remark4 != ''   ">
+			AND t1.remark4 = #{ eo.remark4 ,jdbcType=VARCHAR }
+		</if>
+		<if test="eo.orderAwardId != null  and eo.orderAwardId != ''   ">
+			AND t1.order_award_id = #{ eo.orderAwardId ,jdbcType=VARCHAR }
+		</if>
+		ORDER BY t1.created_at DESC
+	</select>
+
+
+	<insert id="batchInsert">
+		INSERT INTO tc_order_sku_writeoff
+		(
+		id,
+		tenant_code,
+		created_at,
+		created_by,
+		updated_at,
+		updated_by,
+		version,
+		dr,
+		order_child_id,
+		award_id,
+		award_item_id,
+		order_sku_id,
+		order_id,
+		status,
+		member_award_item_id,
+		award_num,
+		remark1,
+		remark2,
+		remark3,
+		remark4,
+		order_award_id,
+		)
+		VALUES
+		<foreach collection="eo" index="index" item="value" separator=",">
+			(
+			#{value.id},
+			#{value.tenantCode},
+			#{value.createdAt},
+			#{value.createdBy},
+			#{value.updatedAt},
+			#{value.updatedBy},
+			#{value.version},
+			#{value.dr},
+			#{value.orderChildId},
+			#{value.awardId},
+			#{value.awardItemId},
+			#{value.orderSkuId},
+			#{value.orderId},
+			#{value.status},
+			#{value.memberAwardItemId},
+			#{value.awardNum},
+			#{value.remark1},
+			#{value.remark2},
+			#{value.remark3},
+			#{value.remark4},
+			#{value.orderAwardId},
+			)
+		</foreach>
+	</insert>
+	<update id="batchUpdate">
+		INSERT INTO tc_order_sku_writeoff
+		(
+		id,
+		tenant_code,
+		created_at,
+		created_by,
+		updated_at,
+		updated_by,
+		version,
+		dr,
+		order_child_id,
+		award_id,
+		award_item_id,
+		order_sku_id,
+		order_id,
+		status,
+		member_award_item_id,
+		award_num,
+		remark1,
+		remark2,
+		remark3,
+		remark4,
+		order_award_id,
+		)
+		VALUES
+		<foreach collection="eo" index="index" item="value" separator=",">
+			(
+			#{value.id},
+			#{value.tenantCode},
+			#{value.createdAt},
+			#{value.createdBy},
+			#{value.updatedAt},
+			#{value.updatedBy},
+			#{value.version},
+			#{value.dr},
+			#{value.orderChildId},
+			#{value.awardId},
+			#{value.awardItemId},
+			#{value.orderSkuId},
+			#{value.orderId},
+			#{value.status},
+			#{value.memberAwardItemId},
+			#{value.awardNum},
+			#{value.remark1},
+			#{value.remark2},
+			#{value.remark3},
+			#{value.remark4},
+			#{value.orderAwardId},
+			)
+		</foreach>
+		ON DUPLICATE KEY UPDATE
+		#{value.id},
+		id=values(id),
+		#{value.tenantCode},
+		tenantCode=values(tenantCode),
+		#{value.createdAt},
+		createdAt=values(createdAt),
+		#{value.createdBy},
+		createdBy=values(createdBy),
+		#{value.updatedAt},
+		updatedAt=values(updatedAt),
+		#{value.updatedBy},
+		updatedBy=values(updatedBy),
+		#{value.version},
+		version=values(version),
+		#{value.dr},
+		dr=values(dr),
+		#{value.orderChildId},
+		orderChildId=values(orderChildId),
+		#{value.awardId},
+		awardId=values(awardId),
+		#{value.awardItemId},
+		awardItemId=values(awardItemId),
+		#{value.orderSkuId},
+		orderSkuId=values(orderSkuId),
+		#{value.orderId},
+		orderId=values(orderId),
+		#{value.status},
+		status=values(status),
+		#{value.memberAwardItemId},
+		memberAwardItemId=values(memberAwardItemId),
+		#{value.awardNum},
+		awardNum=values(awardNum),
+		#{value.remark1},
+		remark1=values(remark1),
+		#{value.remark2},
+		remark2=values(remark2),
+		#{value.remark3},
+		remark3=values(remark3),
+		#{value.remark4},
+		remark4=values(remark4),
+		#{value.orderAwardId},
+		orderAwardId=values(orderAwardId),
+	</update>
+
+	<update id="deleteByIds">
+		UPDATE tc_order_sku_writeoff set dr=1 where id in
+		<foreach collection="pks" index="index" item="id" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</update>
+
+
+</mapper>

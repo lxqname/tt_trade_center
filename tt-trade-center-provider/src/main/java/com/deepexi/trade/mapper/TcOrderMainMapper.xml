@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--客户映射 指定到dao接口 -->
+<mapper namespace="com.deepexi.trade.mapper.TcOrderMainMapper">
+
+    <resultMap type="com.deepexi.trade.domain.vo.TcOrderMainVO" id="OrderMainDtoResult">
+        <result property="id" column="id" />
+        <result property="amount" column="amount" />
+        <result property="orderNo" column="order_no" />
+        <result property="orderPayNo" column="order_pay_no" />
+        <result property="orderStatus" column="order_status" />
+        <result property="orderType" column="order_type" />
+        <result property="payType" column="pay_type" />
+        <result property="memberId" column="member_id" />
+        <result property="memberName" column="member_name" />
+        <result property="expendIntegral" column="expend_integral" />
+        <result property="expendCouponId" column="expend_coupon_id" />
+        <result property="operatingStatus" column="operating_status" />
+        <result property="tenantCode" column="tenant_code" />
+        <result property="createdAt" column="created_at" />
+        <result property="createdBy" column="created_by" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="updatedBy" column="updated_by" />
+        <result property="version" column="version" />
+        <result property="dr" column="dr" />
+    </resultMap>
+
+    <resultMap type="com.deepexi.trade.domain.vo.TcOrderMainVO" id="OrderChildDtoResult" extends="OrderMainDtoResult">
+
+        <collection property="tcOrderChildVOS" javaType="ArrayList" ofType="com.deepexi.trade.domain.vo.TcOrderChildVO" >
+            <result property="id" column="id" />
+            <result property="childAmount" column="child_amount" />
+            <result property="childNo" column="child_no" />
+            <result property="orderId" column="order_id" />
+            <result property="orderPayNo" column="order_pay_no" />
+            <result property="childStatus" column="child_status" />
+            <result property="childPayType" column="child_pay_type" />
+            <result property="merchantId" column="merchant_id" />
+            <result property="merchantName" column="merchant_name" />
+            <result property="eventId" column="event_id" />
+            <result property="eventName" column="event_name" />
+            <result property="eventNo" column="event_no" />
+            <result property="tenantCode" column="tenant_code" />
+            <result property="createdAt" column="created_at" />
+            <result property="createdBy" column="created_by" />
+            <result property="updatedAt" column="updated_at" />
+            <result property="updatedBy" column="updated_by" />
+            <result property="version" column="version" />
+            <result property="dr" column="dr" />
+        </collection>
+    </resultMap>
+
+<!--
+
+    <resultMap type="com.deepexi.trade.domain.vo.TcOrderChildVO" id="OrderChildDtoResultBase">
+        <result property="id" column="id" />
+        <result property="childAmount" column="child_amount" />
+        <result property="childNo" column="child_no" />
+        <result property="orderId" column="order_id" />
+        <result property="orderPayNo" column="order_pay_no" />
+        <result property="childStatus" column="child_status" />
+        <result property="childPayType" column="child_pay_type" />
+        <result property="merchantId" column="merchant_id" />
+        <result property="merchantName" column="merchant_name" />
+        <result property="eventId" column="event_id" />
+        <result property="eventName" column="event_name" />
+        <result property="eventNo" column="event_no" />
+        <result property="tenantCode" column="tenant_code" />
+        <result property="createdAt" column="created_at" />
+        <result property="createdBy" column="created_by" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="updatedBy" column="updated_by" />
+        <result property="version" column="version" />
+        <result property="dr" column="dr" />
+    </resultMap>
+
+    <resultMap type="com.deepexi.trade.domain.vo.TcOrderChildVO" id="OrderSkuDtoResult" extends="OrderChildDtoResultBase">
+
+        <collection property="tcOrderSkuDtos" javaType="ArrayList" ofType="com.deepexi.trade.domain.eo.TcOrderSku">
+            <result property="id" column="id" />
+            <result property="orderChildId" column="order_child_id" />
+            <result property="awardId" column="award_id" />
+            <result property="awardName" column="award_name" />
+            <result property="awardType" column="award_type" />
+            <result property="awardStatus" column="award_status" />
+            <result property="originalAmount" column="original_amount" />
+            <result property="discountsAmount" column="discounts_amount" />
+            <result property="count" column="count" />
+            <result property="subtotal" column="subtotal" />
+            <result property="imageUrl" column="image_url" />
+            <result property="exchangeType" column="exchange_type" />
+            <result property="faceValue" column="face_value" />
+            <result property="fullAmount" column="full_amount" />
+            <result property="useDescription" column="use_description" />
+            <result property="tenantCode" column="tenant_code" />
+            <result property="createdAt" column="created_at" />
+            <result property="createdBy" column="created_by" />
+            <result property="updatedAt" column="updated_at" />
+            <result property="updatedBy" column="updated_by" />
+            <result property="version" column="version" />
+            <result property="dr" column="dr" />
+            <result property="chargeCount" column="charge_count" />
+            <result property="productId" column="product_id" />
+            <result property="orderId" column="order_id" />
+        </collection>
+    </resultMap>
+
+
+
+
+    <resultMap type="com.deepexi.trade.domain.vo.TcOrderMainVO" id="OrderChildDtoResult" extends="OrderMainDtoResult">
+
+        <collection property="tcOrderChildVOS" column="childId" ofType="com.deepexi.trade.domain.vo.TcOrderChildVO" select="findChildList" />
+    </resultMap>
+
+
+
+
+    <select id="findChildList" parameterType="String" resultMap="OrderSkuDtoResult">
+        SELECT
+        tc.*,
+        ts.*
+        FROM tc_order_child tc
+        LEFT JOIN tc_order_sku ts ON ts.order_child_id = tc.id
+        WHERE
+        tc.dr = 0
+            AND tc.id = #{childId}
+        ORDER BY
+        tc.created_at DESC
+    </select>-->
+    <sql id="Base_Column_List">
+    tm.*/*,
+	tc.**/
+	/*,
+	ts.**/
+	</sql>
+    <select id="findList" resultMap="OrderMainDtoResult">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM tc_order_main tm
+        LEFT JOIN tc_order_child tc ON tc.order_id = tm.id
+        LEFT JOIN tc_order_sku ts ON ts.order_child_id = tc.id
+        WHERE tm.dr=0
+        <if test="eo.id != null and eo.id != ''">
+            AND tm.id = #{eo.id}
+        </if>
+        <if test="eo.merchantName != null and eo.merchantName != ''">
+            AND tc.merchant_name = #{eo.merchantName}
+        </if>
+        <if test="eo.orderNo != null and eo.orderNo != ''">
+            AND tm.order_no = #{eo.orderNo}
+        </if>
+        <if test="eo.memberId != null and eo.memberId != ''">
+            AND tm.member_id = #{eo.memberId}
+        </if>
+        <if test="eo.orderType != null">
+            AND tm.order_type = #{eo.orderType}
+        </if>
+
+
+        <if test="eo.status != null  and eo.status!= ''   ">
+            AND tm.order_status IN
+
+            <foreach collection="eo.toListSplit(eo.status)" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+
+        <if test="eo.orderStatus != null">
+            AND tm.order_status = #{eo.orderStatus}
+        </if>
+        <if test="eo.operatingStatus != null">
+            AND tm.operating_Status = #{eo.operatingStatus}
+        </if>
+        <if test="eo.closeTime != null">
+            AND tm.created_at &lt; DATE_SUB(NOW(),INTERVAL #{eo.closeTime} MINUTE)
+        </if>
+
+        <if test="eo.awardId != null  and eo.awardId!= ''   ">
+            AND ts.award_id IN
+
+            <foreach collection="eo.toListSplit(eo.awardId)" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+
+        <if test="eo.orderPayNo != null and eo.orderPayNo != ''">
+            AND tm.order_pay_no = #{eo.orderPayNo}
+        </if>
+        <if test="eo.tenantCode != null and eo.tenantCode != ''">
+            AND tm.tenant_code = #{eo.tenantCode}
+        </if>
+        <choose>
+            <when test="eo.orderBy != null and eo.orderBy !='' ">
+                ORDER BY ${eo.orderBy}
+            </when>
+            <otherwise>
+                ORDER BY tm.created_at DESC
+            </otherwise>
+        </choose>
+    </select>
+    <insert id="batchInsert">
+        INSERT INTO tc_order_main
+        ( id, created_at, created_by, updated_at, updated_by, order_status, member_id, member_name
+        , order_no, order_type, pay_type, amount, version, dr, tenant_code,
+        order_pay_no)
+        VALUES
+        <foreach collection="eo" index="index" item="value" separator=",">
+            ( #{value.id}, #{value.createdAt}, #{value.createdBy}, #{value.updatedAt}, #{value.updatedBy},
+            #{value.orderStatus}, #{value.memberId}, #{value.memberName}, #{value.orderNo}, #{value.orderType}, #{value.payType},
+            #{value.amount}, #{value.version}, #{value.dr}, #{value.tenantCode}, #{value.orderPayNo})
+        </foreach>
+    </insert>
+    <update id="batchUpdate">
+        INSERT INTO tc_order_main
+        ( id, created_at, created_by, updated_at, updated_by, order_status, member_id, member_name
+        , order_no, order_type, pay_type, amount, version, dr, tenant_code,
+        order_pay_no)
+        VALUES
+        <foreach collection="eo" index="index" item="value" separator=",">
+            ( #{value.id}, #{value.createdAt}, #{value.createdBy}, #{value.updatedAt}, #{value.updatedBy},
+            #{value.orderStatus}, #{value.memberId}, #{value.memberName}, #{value.orderNo}, #{value.orderType}, #{value.payType},
+            #{value.amount}, #{value.version}, #{value.dr}, #{value.tenantCode}, #{value.orderPayNo})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        id=values(id), created_at=values(created_at), created_by=values(created_by), updated_at=values(updated_at),
+        updated_by=values(updated_by), order_status=values(order_status), member_id=values(member_id),
+        member_name=values(member_name), order_no=values(order_no),
+        order_type=values(order_type), pay_type=values(pay_type), amount=values(amount), version=values(version),
+        dr=values(dr), tenant_code=values(tenant_code), order_pay_no=values(order_pay_no)
+    </update>
+    <update id="deleteByIds">
+        UPDATE tc_order_main set dr=1 where id in
+        <foreach collection="pks" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="updateByOrderIds" >
+        UPDATE tc_order_main
+        <set>
+            <if test="eo.operatingStatus !=null">
+                OPERATING_STATUS = #{eo.operatingStatus}
+            </if>
+        </set>
+        where id in
+        <foreach collection="eo.ids" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

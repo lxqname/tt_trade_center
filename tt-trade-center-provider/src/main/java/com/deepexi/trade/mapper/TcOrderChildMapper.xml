@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--客户映射 指定到dao接口 -->
+<mapper namespace="com.deepexi.trade.mapper.TcOrderChildMapper">
+
+
+    <resultMap type="com.deepexi.trade.domain.vo.TcOrderChildVO" id="OrderChildDtoResult">
+        <result property="id" column="id" />
+        <result property="childAmount" column="child_amount" />
+        <result property="childNo" column="child_no" />
+        <result property="orderId" column="order_id" />
+        <result property="orderPayNo" column="order_pay_no" />
+        <result property="childStatus" column="child_status" />
+        <result property="childPayType" column="child_pay_type" />
+        <result property="merchantId" column="merchant_id" />
+        <result property="merchantName" column="merchant_name" />
+        <result property="eventId" column="event_id" />
+        <result property="eventName" column="event_name" />
+        <result property="eventNo" column="event_no" />
+        <result property="tenantCode" column="tenant_code" />
+        <result property="createdAt" column="created_at" />
+        <result property="createdBy" column="created_by" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="updatedBy" column="updated_by" />
+        <result property="version" column="version" />
+        <result property="dr" column="dr" />
+    </resultMap>
+
+    <resultMap type="com.deepexi.trade.domain.vo.TcOrderChildVO" id="OrderSkuDtoResult" extends="OrderChildDtoResult">
+
+        <collection property="tcOrderSkuDtos" javaType="ArrayList" ofType="com.deepexi.trade.domain.eo.TcOrderSku">
+            <result property="id" column="id" />
+            <result property="orderChildId" column="order_child_id" />
+            <result property="awardId" column="award_id" />
+            <result property="awardName" column="award_name" />
+            <result property="awardType" column="award_type" />
+            <result property="awardStatus" column="award_status" />
+            <result property="originalAmount" column="original_amount" />
+            <result property="discountsAmount" column="discounts_amount" />
+            <result property="count" column="count" />
+            <result property="subtotal" column="subtotal" />
+            <result property="imageUrl" column="image_url" />
+            <result property="exchangeType" column="exchange_type" />
+            <result property="faceValue" column="face_value" />
+            <result property="fullAmount" column="full_amount" />
+            <result property="useDescription" column="use_description" />
+            <result property="tenantCode" column="tenant_code" />
+            <result property="createdAt" column="created_at" />
+            <result property="createdBy" column="created_by" />
+            <result property="updatedAt" column="updated_at" />
+            <result property="updatedBy" column="updated_by" />
+            <result property="version" column="version" />
+            <result property="dr" column="dr" />
+            <result property="chargeCount" column="charge_count" />
+            <result property="productId" column="product_id" />
+            <result property="orderId" column="order_id" />
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        tc.order_id,
+        tc.child_no,
+        tc.child_status,
+        tc.child_pay_type,
+        tc.child_amount,
+        tc.id,
+        tc.created_at,
+        tc.created_by,
+        tc.updated_at,
+        tc.updated_by,
+        tc.version,
+        tc.dr,
+        tc.tenant_code,
+        tc.order_pay_no,
+        tc.merchant_id,
+	    tc.merchant_name,
+	    tc.event_id,
+	    tc.event_name,
+	    tc.event_no,
+        ts.image_url,
+        ts.award_name,
+        ts.original_Amount,
+        ts.exchange_type,
+        ts.count,
+        ts.subtotal,
+        ts.face_value,
+        ts.full_amount,
+        ts.use_description,
+        ts.award_id,
+        ts.award_type,
+        ts.id AS skuId,
+	    ts.award_status
+    </sql>
+    <select id="findList" resultMap="OrderChildDtoResult">
+        SELECT
+        tc.*
+        FROM tc_order_child tc
+        /*LEFT JOIN tc_order_sku ts ON ts.order_child_id = tc.id*/
+        WHERE
+        tc.dr = 0
+        <if test="eo.orderId != null and eo.orderId != ''">
+            AND tc.order_id = #{eo.orderId}
+        </if>
+        ORDER BY
+        tc.created_at DESC
+    </select>
+    <insert id="batchInsert">
+        INSERT INTO tc_order_child
+        ( order_id, child_no, child_status, child_pay_type, child_amount, id, created_at, created_by, updated_at,
+        updated_by, version, dr, tenant_code,order_pay_no, merchant_id,
+        merchant_name, event_id, event_name,event_no)
+        VALUES
+        <foreach collection="eo" index="index" item="value" separator=",">
+            ( #{value.orderId}, #{value.childNo}, #{value.childStatus}, #{value.childPayType}, #{value.childAmount},
+            #{value.id}, #{value.createdAt}, #{value.createdBy}, #{value.updatedAt}, #{value.updatedBy},
+            #{value.version}, #{value.dr}, #{value.tenantCode},#{value.orderPayNo},#{value.merchantId}, #{value.merchantName},
+            #{value.eventId}, #{value.eventName},#{value.eventNo})
+        </foreach>
+    </insert>
+    <update id="batchUpdate">
+        INSERT INTO tc_order_child
+        ( order_id, child_no, child_status, child_pay_type, child_amount, id, created_at, created_by, updated_at,
+        updated_by, version, dr, tenant_code,order_pay_no, merchant_id,
+        merchant_name, event_id, event_name,event_no)
+        VALUES
+        <foreach collection="eo" index="index" item="value" separator=",">
+            ( #{value.orderId}, #{value.childNo}, #{value.childStatus}, #{value.childPayType}, #{value.childAmount},
+            #{value.id}, #{value.createdAt}, #{value.createdBy}, #{value.updatedAt}, #{value.updatedBy},
+            #{value.version}, #{value.dr},#{value.tenantCode}, #{value.orderPayNo},#{value.merchantId}, #{value.merchantName},
+            #{value.eventId}, #{value.eventName},#{value.eventNo})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        order_id=values(order_id), child_no=values(child_no), child_status=values(child_status),
+        child_pay_type=values(child_pay_type), child_amount=values(child_amount), id=values(id),
+        created_at=values(created_at), created_by=values(created_by), updated_at=values(updated_at),
+        updated_by=values(updated_by), version=values(version), dr=values(dr), tenant_code=values(tenant_code), order_pay_no=values(order_pay_no), merchant_id=values(merchant_id), merchant_name=values(merchant_name),
+        event_id=values(event_id), event_name=values(event_name),event_no=values(event_no)
+    </update>
+    <update id="deleteByIds">
+        UPDATE tc_order_child set dr=1 where id in
+        <foreach collection="pks" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+    <update id="updateByOrderId" >
+        UPDATE tc_order_child
+        <set>
+            <if test="tc.childStatus !=null">
+                child_status = #{tc.childStatus},
+            </if>
+            <if test="tc.childPayType !=null">
+                child_pay_type = #{tc.childPayType},
+            </if>
+            <if test="tc.orderPayNo !=null and tc.orderPayNo !=''">
+                order_pay_no = #{tc.orderPayNo},
+            </if>
+            <if test="tc.childStatus !=null">
+                child_status = #{tc.childStatus},
+            </if>
+        </set>
+        where order_id = #{tc.orderId}
+    </update>
+
+</mapper>

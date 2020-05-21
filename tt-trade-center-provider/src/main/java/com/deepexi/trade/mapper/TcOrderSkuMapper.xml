@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--客户映射 指定到dao接口 -->
+<mapper namespace="com.deepexi.trade.mapper.TcOrderSkuMapper">
+
+    <resultMap type="com.deepexi.trade.domain.eo.TcOrderSku" id="OrderSkuDtoResult">
+        <result property="id" column="id" />
+        <result property="orderChildId" column="order_child_id" />
+        <result property="awardId" column="award_id" />
+        <result property="awardName" column="award_name" />
+        <result property="awardType" column="award_type" />
+        <result property="awardStatus" column="award_status" />
+        <result property="originalAmount" column="original_amount" />
+        <result property="discountsAmount" column="discounts_amount" />
+        <result property="count" column="count" />
+        <result property="subtotal" column="subtotal" />
+        <result property="imageUrl" column="image_url" />
+        <result property="exchangeType" column="exchange_type" />
+        <result property="faceValue" column="face_value" />
+        <result property="fullAmount" column="full_amount" />
+        <result property="useDescription" column="use_description" />
+        <result property="tenantCode" column="tenant_code" />
+        <result property="createdAt" column="created_at" />
+        <result property="createdBy" column="created_by" />
+        <result property="updatedAt" column="updated_at" />
+        <result property="updatedBy" column="updated_by" />
+        <result property="version" column="version" />
+        <result property="dr" column="dr" />
+        <result property="chargeCount" column="charge_count" />
+        <result property="productId" column="product_id" />
+        <result property="orderId" column="order_id" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+      id,      created_at,      created_by,      updated_at,      updated_by,      order_child_id,      award_id,
+      award_name,      count,      discounts_amount,      original_Amount,      subtotal,      image_url,
+      exchange_type,      version,      dr,      tenant_code,face_value,full_amount,use_description,award_type,award_status,charge_count,product_id,order_id   </sql>
+    <select id="findList" resultType="com.deepexi.trade.domain.eo.TcOrderSku">
+
+        SELECT * FROM tc_order_sku t1 WHERE t1.dr = 0
+
+        <if test="eo.id != null  and eo.id != ''   ">
+            AND t1.id = #{ eo.id ,jdbcType=VARCHAR }
+        </if>
+        <if test="eo.orderChildId != null  and eo.orderChildId != ''   ">
+            AND t1.order_child_id = #{ eo.orderChildId ,jdbcType=VARCHAR }
+        </if>
+
+        <if test="eo.awardId != null  and eo.awardId!= ''   ">
+            AND t1.award_id IN
+
+            <foreach collection="eo.toListSplit(eo.awardId)" index="index" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </if>
+
+
+        <if test="eo.awardName != null  and eo.awardName != ''   ">
+            AND t1.award_name = #{ eo.awardName ,jdbcType=VARCHAR }
+        </if>
+        <if test="eo.awardType != null  and eo.awardType != ''   ">
+            AND t1.award_type = #{ eo.awardType ,jdbcType=TINYINT }
+        </if>
+        <if test="eo.awardStatus != null  and eo.awardStatus != ''   ">
+            AND t1.award_status = #{ eo.awardStatus ,jdbcType=TINYINT }
+        </if>
+        <if test="eo.originalAmount != null  and eo.originalAmount != ''   ">
+            AND t1.original_amount = #{ eo.originalAmount ,jdbcType=DECIMAL }
+        </if>
+        <if test="eo.discountsAmount != null  and eo.discountsAmount != ''   ">
+            AND t1.discounts_amount = #{ eo.discountsAmount ,jdbcType=DECIMAL }
+        </if>
+        <if test="eo.count != null  and eo.count != ''   ">
+            AND t1.count = #{ eo.count ,jdbcType=TINYINT }
+        </if>
+        <if test="eo.subtotal != null  and eo.subtotal != ''   ">
+            AND t1.subtotal = #{ eo.subtotal ,jdbcType=DECIMAL }
+        </if>
+        <if test="eo.imageUrl != null  and eo.imageUrl != ''   ">
+            AND t1.image_url = #{ eo.imageUrl ,jdbcType=VARCHAR }
+        </if>
+        <if test="eo.exchangeType != null  and eo.exchangeType != ''   ">
+            AND t1.exchange_type = #{ eo.exchangeType ,jdbcType=TINYINT }
+        </if>
+        <if test="eo.faceValue != null  and eo.faceValue != ''   ">
+            AND t1.face_value = #{ eo.faceValue ,jdbcType=DECIMAL }
+        </if>
+        <if test="eo.fullAmount != null  and eo.fullAmount != ''   ">
+            AND t1.full_amount = #{ eo.fullAmount ,jdbcType=DECIMAL }
+        </if>
+        <if test="eo.useDescription != null  and eo.useDescription != ''   ">
+            AND t1.use_description = #{ eo.useDescription ,jdbcType=VARCHAR }
+        </if>
+        <if test="eo.tenantCode != null  and eo.tenantCode != ''   ">
+            AND t1.tenant_code = #{ eo.tenantCode ,jdbcType=VARCHAR }
+        </if>
+        <if test="eo.createdAt != null  and eo.createdAt != ''   ">
+            AND t1.created_at = #{ eo.createdAt ,jdbcType=TIMESTAMP }
+        </if>
+        <if test="eo.createdBy != null  and eo.createdBy != ''   ">
+            AND t1.created_by = #{ eo.createdBy ,jdbcType=VARCHAR }
+        </if>
+        <if test="eo.updatedAt != null  and eo.updatedAt != ''   ">
+            AND t1.updated_at = #{ eo.updatedAt ,jdbcType=TIMESTAMP }
+        </if>
+        <if test="eo.updatedBy != null  and eo.updatedBy != ''   ">
+            AND t1.updated_by = #{ eo.updatedBy ,jdbcType=VARCHAR }
+        </if>
+        <if test="eo.version != null  and eo.version != ''   ">
+            AND t1.version = #{ eo.version ,jdbcType=TINYINT }
+        </if>
+        <if test="eo.dr != null  and eo.dr != ''   ">
+            AND t1.dr = #{ eo.dr ,jdbcType=TINYINT }
+        </if>
+        <if test="eo.chargeCount != null  and eo.chargeCount != ''   ">
+            AND t1.charge_count = #{ eo.chargeCount ,jdbcType=TINYINT }
+        </if>
+        <if test="eo.productId != null  and eo.productId != ''   ">
+            AND t1.product_id = #{ eo.productId ,jdbcType=VARCHAR }
+        </if>
+        <if test="eo.orderId != null  and eo.orderId != ''   ">
+            AND t1.order_id = #{ eo.orderId ,jdbcType=VARCHAR }
+        </if>
+
+        ORDER BY t1.created_at DESC
+    </select>
+    <insert id="batchInsert">
+        INSERT INTO tc_order_sku
+        ( id, created_at, created_by, updated_at, updated_by, order_child_id, award_id, award_name, count,
+        discounts_amount, original_Amount, subtotal, image_url, exchange_type,
+        version, dr, tenant_code,face_value,full_amount,use_description,award_type,award_status,charge_count,product_id,order_id)
+        VALUES
+        <foreach collection="eo" index="index" item="value" separator=",">
+            ( #{value.id}, #{value.createdAt}, #{value.createdBy}, #{value.updatedAt}, #{value.updatedBy},
+            #{value.orderChildId}, #{value.awardId}, #{value.awardName}, #{value.count}, #{value.discountsAmount},
+            #{value.originalAmount}, #{value.subtotal}, #{value.imageUrl}, #{value.exchangeType},
+            #{value.version}, #{value.dr}, #{value.tenantCode},#{value.faceValue}, #{value.useDescription},
+            #{value.fullAmount}, #{value.awardType}, #{value.awardStatus}, #{value.chargeCount}, #{value.productId}, #{value.orderId})
+        </foreach>
+    </insert>
+    <update id="batchUpdate">
+        INSERT INTO tc_order_sku
+        ( id, created_at, created_by, updated_at, updated_by, order_child_id, award_id, award_name, count,
+        discounts_amount, original_Amount, subtotal, image_url, exchange_type,
+        version, dr, tenant_code,face_value,full_amount,use_description,award_type,award_status,charge_count,product_id,order_id)
+        VALUES
+        <foreach collection="eo" index="index" item="value" separator=",">
+            ( #{value.id}, #{value.createdAt}, #{value.createdBy}, #{value.updatedAt}, #{value.updatedBy},
+            #{value.orderChildId}, #{value.awardId}, #{value.awardName}, #{value.count}, #{value.discountsAmount},
+            #{value.originalAmount}, #{value.subtotal}, #{value.imageUrl}, #{value.exchangeType},
+            #{value.version}, #{value.dr}, #{value.tenantCode},#{value.faceValue}, #{value.useDescription},
+            #{value.fullAmount}, #{value.awardType}, #{value.awardStatus}, #{value.chargeCount}, #{value.productId}, #{value.orderId})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        id=values(id), created_at=values(created_at), created_by=values(created_by), updated_at=values(updated_at),
+        updated_by=values(updated_by), order_child_id=values(order_child_id), award_id=values(award_id),
+        award_name=values(award_name), count=values(count), discounts_amount=values(discounts_amount),
+        original_Amount=values(original_Amount), subtotal=values(subtotal), image_url=values(image_url),
+        exchange_type=values(exchange_type), version=values(version),
+        dr=values(dr), tenant_code=values(tenant_code), face_value=values(face_value),
+        full_amount=values(full_amount), use_description=values(use_description), award_type=values(award_type),
+        award_status=values(award_status),charge_count=values(chargeCount),product_id=values(productId),order_id=values(orderId)
+    </update>
+    <update id="deleteByIds">
+        UPDATE tc_order_sku set dr=1 where id in
+        <foreach collection="pks" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

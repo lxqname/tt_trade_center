@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--客户映射 指定到dao接口 -->
+<mapper namespace="com.deepexi.trade.mapper.TcOrderRefundWaterMapper">
+    <resultMap type="com.deepexi.trade.domain.dto.TcOrderRefundWaterDto" id="TcOrderRefundWaterDtoResult">
+        <result property="id" column="id"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="createdBy" column="created_by"/>
+        <result property="updatedAt" column="updated_at"/>
+        <result property="updatedBy" column="updated_by"/>
+        <result property="version" column="version"/>
+        <result property="dr" column="dr"/>
+        <result property="tenantCode" column="tenant_code"/>
+        <result property="refundOrderId" column="refund_order_id"/>
+        <result property="processType" column="process_type"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      id,      created_at,      created_by,      updated_at,      updated_by,      version,      dr,
+            tenant_code,      refund_order_id,      process_type    </sql>
+    <select id="findList" resultType="com.deepexi.trade.domain.eo.TcOrderRefundWater">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM tc_order_refund_water WHERE dr=0
+        <if test="eo.refundOrderId != null and eo.refundOrderId != ''">
+            AND refund_order_id = #{eo.refundOrderId}
+        </if>
+        <if test="eo.processType != null and eo.processType != ''">
+            AND process_type = #{eo.processType}
+        </if>
+        ORDER BY created_at ASC
+    </select>
+    <insert id="batchInsert">
+        INSERT INTO tc_order_refund_water
+        ( id, created_at, created_by, updated_at, updated_by, version, dr, tenant_code, refund_order_id, process_type)
+        VALUES
+        <foreach collection="eo" index="index" item="value" separator=",">
+            ( #{value.id}, #{value.createdAt}, #{value.createdBy}, #{value.updatedAt}, #{value.updatedBy},
+            #{value.version}, #{value.dr}, #{value.tenantCode}, #{value.refundOrderId}, #{value.processType})
+        </foreach>
+    </insert>
+    <update id="batchUpdate">
+        INSERT INTO tc_order_refund_water
+        ( id, created_at, created_by, updated_at, updated_by, version, dr, tenant_code, refund_order_id, process_type)
+        VALUES
+        <foreach collection="eo" index="index" item="value" separator=",">
+            ( #{value.id}, #{value.createdAt}, #{value.createdBy}, #{value.updatedAt}, #{value.updatedBy},
+            #{value.version}, #{value.dr}, #{value.tenantCode}, #{value.refundOrderId}, #{value.processType})
+        </foreach>
+        ON DUPLICATE KEY UPDATE
+        id=values(id), created_at=values(created_at), created_by=values(created_by), updated_at=values(updated_at),
+        updated_by=values(updated_by), version=values(version), dr=values(dr), tenant_code=values(tenant_code),
+        refund_order_id=values(refund_order_id), process_type=values(process_type)
+    </update>
+    <update id="deleteByIds">
+        <!--UPDATE tc_order_refund_water set dr=1 where id in
+        <foreach collection="pks" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>-->
+        <!-- 避免脏数据以及无用的数据，流水表数据可以直接delete -->
+        DELETE
+        FROM
+        tc_order_refund_water
+        WHERE
+        id IN
+        <foreach collection="pks" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
+
+</mapper>

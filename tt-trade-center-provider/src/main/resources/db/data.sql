@@ -1,0 +1,46 @@
+DROP TABLE IF EXISTS product;
+
+CREATE TABLE IF NOT EXISTS product(id varchar(32) unsigned not null primary key,name varchar(32),price int,tenant_id varchar(32),created_by varchar(32),updated_by varchar(32),created_at date,updated_at date, dr int(1));
+
+INSERT INTO product(id, name, price, tenant_id, created_by, updated_by, created_at, updated_at, dr) VALUES ('1', '苹果', 20, null, null, null, null, null, 0),
+('2', '梨', 10, null, null ,null, null, null, 0),
+('3', '桃子', 123, null, null ,null, null, null, 0),
+('4', '香蕉', 11, null, null ,null, null, null, 0),
+('5', '猕猴桃', 50, null, null ,null, null, null, 0),
+('6', '桔子', 33, null, null ,null, null, null, 0),
+('7', '菠萝', 90, null, null ,null, null, null, 0),
+('8', '芒果', 766, null, null ,null, null, null, 0),
+('9', '红枣', 29, null, null ,null, null, null, 0),
+('10', '榴莲', 990, null, null ,null, null, null, 0),
+('11', '柚子', 291, null, null ,null, null, null, 0),
+('12', '小番茄', 200, null, null ,null, null, null, 0);
+CREATE TABLE IF NOT EXISTS hsp_member_group(
+    id varcahr(32) not null primary key,    name varchar(255) not null ,    describe varchar(255)  ,    state tinyint not null ,    restrict varchar(255) not null ,    relation tinyint not null ,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_member(
+    id varcahr(32) not null primary key,    account varchar(255) not null ,    mobile int  not null ,    state tinyint not null ,    nick_name varchar(255)  ,    head_img varchar(255)  ,    name varchar(255)  ,    sex tinyint  ,    birth date  ,    age int   ,    job varchar(255)  ,    wechat varchar(255)  ,    email varchar(255)  ,    qq varchar(255)  ,    provinces varchar(255)  ,    city varchar(255)  ,    district varchar(255)  ,    location varchar(255)  ,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_tag_type(
+    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  ,    name varchar(255)  ,    description varchar(255)  ,    contain_count int   ,    id varcahr(32) not null primary key,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_member_tag_relation(
+    id varcahr(32) not null primary key,    member_id varchar(255)  ,    tag_id varchar(255)  ,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_member_group_relation(
+    id varcahr(32) not null primary key,    member_id varchar(255)  ,    member_group_id varchar(255)  ,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_member_group(
+    id varcahr(32) not null primary key,    name varchar(255) not null ,    details varchar(255)  ,    state tinyint not null ,    astrict varchar(255) not null ,    relation tinyint not null ,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_tag_type(
+    id varcahr(32) not null primary key,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  ,    name varchar(255)  ,    description varchar(255)  ,    contain_count int   );
+CREATE TABLE IF NOT EXISTS hsp_member(
+    id varcahr(32) not null primary key,    account varchar(255) not null ,    mobile int  not null ,    state tinyint not null ,    nick_name varchar(255)  ,    head_img varchar(255)  ,    name varchar(255)  ,    sex tinyint  ,    birth date  ,    age int   ,    job varchar(255)  ,    wechat varchar(255)  ,    email varchar(255)  ,    qq varchar(255)  ,    provinces varchar(255)  ,    city varchar(255)  ,    district varchar(255)  ,    location varchar(255)  ,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_member_tag_relation(
+    id varcahr(32) not null primary key,    member_id varchar(255)  ,    tag_id varchar(255)  ,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_tag_base(
+    id varcahr(32) not null primary key,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  ,    name varchar(255)  ,    tag_type_ids varchar(255)  ,    description varchar(255)  ,    relation_id varchar(255)  ,    relation_name varchar(255)  ,    count_rule varchar(255)  ,    count int   );
+CREATE TABLE IF NOT EXISTS hsp_tag_base_rule(
+    id varcahr(32) not null primary key,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  ,    count_rule varchar(255)  ,    left_border_flag varchar(255)  ,    left_border_value varchar(255)  ,    right_border_flag varchar(255)  ,    right_border_value varchar(255)  ,    tag_base_id varchar(255)  ,    datasoure_id varchar(255)  ,    table_name varchar(255)  ,    column_name varchar(255)  ,    column_type varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_tag_diy_rule(
+    id varcahr(32) not null primary key,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  ,    left_border_flag varchar(255)  ,    left_border_value varchar(255)  ,    right_border_flag varchar(255)  ,    right_border_value varchar(255)  ,    tag_diy_id varchar(255)  ,    tag_diy_name varchar(255)  ,    tag_type_id varchar(255)  ,    tag_type_name varchar(255)  ,    tag_base_id varchar(255)  ,    tag_base_name varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_member_group_relation(
+    id varcahr(32) not null primary key,    member_id varchar(255)  ,    member_group_id varchar(255)  ,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_tag_diy(
+    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  ,    name varchar(255)  ,    tag_type_id varchar(255)  ,    tag_type_name varchar(255)  ,    description varchar(255)  ,    status varchar(255)  ,    count int   ,    id varcahr(32) not null primary key,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  );
+CREATE TABLE IF NOT EXISTS hsp_datasource(
+    id varcahr(32) not null primary key,    tenant_code varchar(255)  ,    created_at datetime  ,    created_by varchar(255)  ,    updated_at datetime  ,    updated_by varchar(255)  ,    version int   ,    dr tinyint  ,    remark1 varchar(255)  ,    remark2 varchar(255)  ,    remark3 varchar(255)  ,    remark4 varchar(255)  ,    username varchar(255)  ,    psw varchar(255)  ,    url varchar(255)  ,    name varchar(255)  );
